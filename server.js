@@ -12,10 +12,6 @@ let metadata; // Declare metadata outside of the endpoint
 app.use(cors({
   origin: [
     'http://localhost:3000', 
-    'http://your-image-origin.com',
-    'http://your-video-origin.com',
-    'http://your-document-origin.com',
-    'http://your-audio-origin.com',
   ],
   methods: 'GET',
 }));

@@ -32,7 +32,7 @@ app.get('/api/tags', async (req, res) => {
 });
 
 // Define a function to handle file types for a specific category
-const getFileListForCategory = async (folderPath, fileExtensions) => {
+const getFileListForCategory = async (folderPath, fileExtensions, endpoint) => {
   try {
     const files = await fs.readdir(folderPath);
 
@@ -44,13 +44,16 @@ const getFileListForCategory = async (folderPath, fileExtensions) => {
     return filteredFiles.map(file => ({
       title: file,
       date: new Date().toISOString(),
-      file_source: `/api/pictures/${file}`, // Updated endpoint path
+      file_source: `/api/${endpoint}/${file}`, // Use the provided endpoint
     }));
   } catch (error) {
     console.error('Error reading directory:', error);
     throw new Error('Internal Server Error');
   }
 };
+
+
+
 
 // API endpoint to get the list of images with optional tags query parameter
 app.get('/api/pictures-list', async (req, res) => {
@@ -66,7 +69,7 @@ app.get('/api/pictures-list', async (req, res) => {
     }
 
     // Fetch all image files
-    const allImageFiles = await getFileListForCategory(imagesPath, ['png', 'jpg', 'jpeg']);
+    const allImageFiles = await getFileListForCategory(imagesPath, ['png', 'jpg', 'jpeg'], 'pictures'); // Pass 'pictures' as the endpoint
 
     // Filter images based on tags
     const filteredImageFiles = tags.length > 1
@@ -94,7 +97,7 @@ app.use('/api/pictures', express.static(path.join('F:', 'data', 'pictures'))); /
 app.get('/api/videos-list', async (req, res) => {
   try {
     const videosPath = path.join('F:', 'data', 'videos');
-    const videoFiles = await getFileListForCategory(videosPath, ['mp4', 'webm']);
+    const videoFiles = await getFileListForCategory(videosPath, ['mp4', 'webm'], 'videos');
     res.json(videoFiles);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });

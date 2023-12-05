@@ -57,7 +57,6 @@ const getFileListForCategory = async (folderPath, fileExtensions) => {
 };
 
 // API endpoint to get the list of images with optional tags query parameter
-// API endpoint to get the list of images with optional tags query parameter
 app.get('/api/pictures-list', async (req, res) => {
   try {
     const imagesPath = path.join('F:', 'data', 'pictures');
@@ -92,10 +91,6 @@ app.get('/api/pictures-list', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
-
 
 app.use('/api/pictures', express.static(path.join('F:', 'data', 'pictures'))); // Updated static file path
 
